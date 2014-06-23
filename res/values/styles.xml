@@ -1,0 +1,19 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppTheme" parent="android:Theme.Holo.Light"></style>
+    
+    <style name="ErrorText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/dark_purple</item>
+		<item name="android:background">@drawable/message_selector</item>
+		<item name="android:padding">@dimen/double_spacing</item>
+    </style>
+    <style name="MessageText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/dark_purple</item>
+		<item name="android:padding">@dimen/double_spacing</item>
+		<item name="android:gravity">center</item>
+    </style>
+    <style name="HeaderText" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/pale_blue</item>
+    </style>
+    
+</resources>

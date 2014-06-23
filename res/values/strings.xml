@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Image Search</string>
+    <string name="search_hint">Image Search</string>
+    <string name="message_failure">Network failure. Tap to try again.</string>
+    <string name="message_empty">No results.</string>
+    <string name="message_img_failure">x</string>
+    
+    <string name="action_loading">Loading</string>
+    <string name="action_search">Image Search</string>
+</resources>

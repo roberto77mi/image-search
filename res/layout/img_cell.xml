@@ -1,0 +1,33 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/img_cell_min_height"
+    android:padding="@dimen/img_cell_padding"
+    android:gravity="center">
+
+    <ImageView 
+        android:id="@+id/img_row"
+        android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:scaleType="fitCenter"
+		android:layout_gravity="center"
+		android:background="@color/pale_gray"
+        />
+    
+    <!-- selector overlay on top of the image -->
+    <FrameLayout 
+        android:id="@+id/img_row_selector_overlay"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@drawable/overlay_selector"/>
+        
+    <!-- on download failure, shows a small orange 'x' -->
+    <TextView android:id="@+id/img_row_message"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:textColor="@color/orange"
+        android:text="@string/message_img_failure"/>
+     
+</FrameLayout>

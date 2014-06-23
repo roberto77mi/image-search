@@ -1,0 +1,34 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="false"
+    android:focusable="false"
+    android:orientation="vertical">
+
+    <!-- error message -->
+    <TextView
+        android:id="@+id/image_grid_message_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ErrorText"
+        android:text="@string/message_failure"
+        android:visibility="gone"/>
+
+    <!-- no results message -->
+    <TextView
+        android:id="@+id/image_grid_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/MessageText"
+        android:text="@string/message_empty"
+        android:visibility="gone"/>
+        
+    <GridView
+        android:id="@+id/image_grid_grid"
+        android:numColumns="3"
+        android:paddingLeft="@dimen/def_spacing"
+    	android:paddingRight="@dimen/def_spacing"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+ 
+</LinearLayout>
