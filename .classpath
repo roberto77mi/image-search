@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="libs/okhttp-2.0.0.jar"/>
 	<classpathentry kind="lib" path="libs/retrofit-1.6.0.jar"/>
 	<classpathentry kind="lib" path="libs/gson-2.2.4.jar"/>
+	<classpathentry kind="lib" path="libs/android-support-v13.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

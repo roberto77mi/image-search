@@ -1,13 +1,20 @@
 package rf.demo.uberimagesearch;
 
 import static rf.demo.uberimagesearch.Constant.LOG_TAG;
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.SearchManager;
+import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,22 +35,84 @@ public class ImageGridActivity extends Activity implements ProgressActivity {
 	
 	String mLastQuery = null;
 	
+	ViewPager mViewPager;
+	TabsAdapter mTabsAdapter;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.activity_image_grid);
+		// setContentView(R.layout.activity_image_grid);
+		setContentView(R.layout.activity_main_pager);
 
-		gridFragment = (ImageGridFragment) getFragmentManager().findFragmentById(R.id.fragment_grid);
+		
+		
+		// gridFragment = (ImageGridFragment) getFragmentManager().findFragmentById(R.id.fragment_grid);
 		
 		if (savedInstanceState!=null) {
 			mLastQuery = savedInstanceState.getString("query");
 		}
 		
+		setupTabs();
+		
 	}
 	
 	
 	
+	private void setupTabs() {
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mTabsAdapter = new TabsAdapter(getFragmentManager());
+		mViewPager.setAdapter(mTabsAdapter);
+		setupActionBar();
+		mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int page) {
+				getActionBar().setSelectedNavigationItem(page);
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) { }
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) { }
+			
+		});
+	}
+
+
+
+	private void setupActionBar() {
+
+		final ActionBar actionBar = getActionBar();
+
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+			@Override
+			public void onTabSelected(Tab tab, FragmentTransaction ft) {
+				 mViewPager.setCurrentItem(tab.getPosition());
+			}
+			@Override
+			public void onTabReselected(Tab tab, FragmentTransaction ft) {}
+			@Override
+			public void onTabUnselected(Tab tab, FragmentTransaction ft) {}
+
+		};
+
+		actionBar.addTab(
+				actionBar.newTab().setText(R.string.tab_image_grid).setTabListener(tabListener)
+				);
+
+		actionBar.addTab(
+				actionBar.newTab().setText(R.string.tab_map).setTabListener(tabListener)
+				);
+		actionBar.addTab(
+				actionBar.newTab().setText(R.string.tab_favorites).setTabListener(tabListener)
+				);
+	}
+
+
+
 	/**
 	 * This is a singleTop activity, so running a new search
 	 * just sends a new Intent
@@ -103,12 +172,12 @@ public class ImageGridActivity extends Activity implements ProgressActivity {
 			searchView.clearFocus();
 		} else {
 			// workaround to open search suggestions before start typing
-			searchView.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						searchView.setQuery("", false);
-					}
-				}, 300);
+//			searchView.postDelayed(new Runnable() {
+//					@Override
+//					public void run() {
+//						searchView.setQuery("", false);
+//					}
+//				}, 300);
 		}
 		return true;
 	}
@@ -125,6 +194,44 @@ public class ImageGridActivity extends Activity implements ProgressActivity {
 		if (menuProgress!=null) {
 			menuProgress.getActionView().setVisibility(View.INVISIBLE);
 		}
+	}
+	
+	private class TabsAdapter extends FragmentPagerAdapter {
+		
+		public TabsAdapter(FragmentManager fm) {
+			super(fm);
+		}
+		
+	    @Override
+	    public Fragment getItem(int page) {
+	    	switch (page) {
+			case 0:
+				// TODO : implement factory method.. pass params?
+				gridFragment = new ImageGridFragment();
+				return gridFragment;
+			case 1:
+				Fragment mapFragment = new MapFragment();
+				return mapFragment;
+				
+			case 2:
+				Fragment favFragment = new FavoritesFragment();
+				return favFragment;
+				
+			default:
+				break;
+			}
+	    	return null; // should never go here
+	    }
+
+		@Override
+		public int getCount() {
+			return 3;
+		}
+		  @Override
+		    public CharSequence getPageTitle(int position) {
+		        return "PAGE " + (position + 1);
+		    }
+
 	}
 	
 }

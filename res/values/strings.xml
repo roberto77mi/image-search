@@ -7,6 +7,11 @@
     <string name="message_empty">No results.</string>
     <string name="message_img_failure">x</string>
     
+    <string name="tab_image_grid">GRID</string>
+    <string name="tab_map">MAP</string>
+    <string name="tab_favorites">FAVORITES</string>
+    
     <string name="action_loading">Loading</string>
     <string name="action_search">Image Search</string>
+
 </resources>
