@@ -3,6 +3,7 @@ package rf.demo.uberimagesearch;
 import static rf.demo.uberimagesearch.Constant.LOG_TAG;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -11,6 +12,7 @@ import retrofit.client.Response;
 import rf.demo.uberimagesearch.api.GoogleImageApi;
 import rf.demo.uberimagesearch.api.GoogleImageApi.GoogleImageApiResponse;
 import rf.demo.uberimagesearch.api.WebImage;
+import rf.demo.uberimagesearch.db.DatabaseHelper;
 import rf.demo.uberimagesearch.history.SearchHistoryProvider;
 import android.app.Activity;
 import android.app.Fragment;
@@ -26,10 +28,12 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class ImageGridFragment extends Fragment implements OnScrollListener, OnItemClickListener {
+public class ImageGridFragment extends Fragment implements OnScrollListener, OnItemClickListener , OnItemLongClickListener {
 	ProgressActivity activity;
 	
 	GridView mGridView;
@@ -119,6 +123,7 @@ public class ImageGridFragment extends Fragment implements OnScrollListener, OnI
 		
 		mGridView.setOnScrollListener( this );
 		mGridView.setOnItemClickListener( this );
+		mGridView.setOnItemLongClickListener( this );
 		
 		return rootView;
 	}
@@ -165,6 +170,29 @@ public class ImageGridFragment extends Fragment implements OnScrollListener, OnI
 				Intent.ACTION_VIEW, 
 				Uri.parse(webImage.url)));
 	
+	}
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view,
+			int position, long id) {
+		// TODO change this to a double click, like Instagram
+		
+		WebImage webImage = mAdapter.getItem(position);
+		
+		if (webImage!=null) {
+			
+			webImage.fav = true;
+			webImage.favDate = new Date();
+			webImage.q = mQuery;
+
+			DatabaseHelper.getInstance(getActivity()).saveWebImage(webImage);
+			
+			// TODO make Async
+			int total = DatabaseHelper.getInstance(getActivity()).countAll();
+			Toast.makeText(getActivity(), total+" favorites", Toast.LENGTH_LONG).show();
+			
+		}
+		return true;
 	}
 	
 	private void resetAdapter(){
