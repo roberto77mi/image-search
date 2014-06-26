@@ -1,12 +1,13 @@
 package rf.demo.uberimagesearch;
 
 import static rf.demo.uberimagesearch.Constant.LOG_TAG;
-
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +41,7 @@ public class ImageGridActivity extends Activity implements ProgressActivity {
 		}
 		
 	}
+	
 	
 	
 	/**
