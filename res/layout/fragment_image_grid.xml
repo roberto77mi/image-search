@@ -3,7 +3,8 @@
     android:layout_height="match_parent"
     android:focusableInTouchMode="false"
     android:focusable="false"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:animateLayoutChanges="true">
 
     <!-- error message -->
     <TextView
@@ -12,6 +13,8 @@
         android:layout_height="wrap_content"
         style="@style/ErrorText"
         android:text="@string/message_failure"
+        android:drawableRight="@android:drawable/ic_menu_rotate"
+        android:drawablePadding="@dimen/def_spacing"
         android:visibility="gone"/>
 
     <!-- no results message -->
