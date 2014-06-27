@@ -32,7 +32,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ImageGridFragment extends Fragment implements OnScrollListener, OnItemClickListener , OnItemLongClickListener {
 	ProgressActivity activity;
@@ -163,35 +162,39 @@ public class ImageGridFragment extends Fragment implements OnScrollListener, OnI
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		WebImage webImage = mAdapter.getItem(position);
 		
+		if (webImage!=null) {
+			if (webImage.fav) {
+				webImage.fav = false;
+				DatabaseHelper.getInstance(getActivity()).delete(webImage.id);
+				
+			} else {
+				webImage.fav = true;
+				webImage.favDate = new Date();
+				webImage.foundInQuery = mQuery;
+				
+				// 
+				webImage.id = DatabaseHelper.getInstance(getActivity()).saveWebImage(webImage);		
+			}
+			getActivity().getContentResolver().notifyChange(UberImagesProvider.CONTENT_URI, null);
+			
+			mAdapter.notifyDataSetChanged(); // show / hide the heart
+		}
+	}
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view,
+			int position, long id) {
+
 		WebImage webImage = mAdapter.getItem(position);
 		
 		// Open Image in Browser
 		getActivity().startActivity(new Intent(
 				Intent.ACTION_VIEW, 
 				Uri.parse(webImage.url)));
-	
-	}
-	
-	@Override
-	public boolean onItemLongClick(AdapterView<?> parent, View view,
-			int position, long id) {
-		// TODO change this to a double click, like Instagram
-		
-		WebImage webImage = mAdapter.getItem(position);
-		
-		if (webImage!=null) {
-			
-			webImage.fav = true;
-			webImage.favDate = new Date();
-			webImage.foundInQuery = mQuery;
-			
-			DatabaseHelper.getInstance(getActivity()).saveWebImage(webImage);
-			
-			getActivity().getContentResolver().notifyChange(UberImagesProvider.CONTENT_URI, null);
-			
-		}
 		return true;
+
 	}
 	
 	private void resetAdapter(){

@@ -2,6 +2,8 @@ package rf.demo.uberimagesearch;
 
 import com.squareup.picasso.Picasso;
 
+import rf.demo.uberimagesearch.api.WebImage;
+import rf.demo.uberimagesearch.db.DatabaseHelper;
 import rf.demo.uberimagesearch.db.UberImagesProvider;
 import android.app.ListFragment;
 import android.app.LoaderManager;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import static rf.demo.uberimagesearch.db.DatabaseHelper.*;
 
@@ -23,6 +26,7 @@ public class FavoritesFragment extends ListFragment implements LoaderManager.Loa
 	private Cursor mCursor;
 	
 	FavoritesAdapter mFavoritesAdapter;
+	View.OnClickListener mFavButtonListener;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,7 +34,31 @@ public class FavoritesFragment extends ListFragment implements LoaderManager.Loa
 		View rootView = inflater.inflate(R.layout.fragment_favorites,
 				container, false);
 		
+		mFavButtonListener = new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+					int pos = getListView().getPositionForView(v);
+					if (android.widget.AdapterView.INVALID_POSITION!=pos) {
+						Cursor c = mFavoritesAdapter.getCursor();
+						c.moveToPosition(pos);
+						int id = c.getInt(0);
+						
+						DatabaseHelper.getInstance(getActivity()).delete(id);
+						notifyChange();
+					}
+				
+			}
+		};
+		
 		return rootView;
+	}
+	
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		Log.d("UBER","View="+v+" "+v.getTag()+" id="+id);
+		// handle clicks on the row, currently not enabled
 	}
 	
 	@Override
@@ -81,8 +109,13 @@ public class FavoritesFragment extends ListFragment implements LoaderManager.Loa
 		}
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			 return LayoutInflater.from(context).inflate(
+			 View v = LayoutInflater.from(context).inflate(
 	                    R.layout.row_favorites, parent, false);
+			 
+			 View btn_fav = v.findViewById(R.id.img_fav);
+			 btn_fav.setTag("fav");
+			 btn_fav.setOnClickListener(mFavButtonListener);
+			 return v;
 		}
 		@Override
 		public void bindView(View row, Context context, Cursor cursor) {
@@ -97,7 +130,15 @@ public class FavoritesFragment extends ListFragment implements LoaderManager.Loa
 			
 			caption.setText(cursor.getString(4));
 		}
-
+		
+//		@Override
+//		public boolean isEnabled(int position) {
+//			return false;
+//		}
+//		@Override
+//		public boolean areAllItemsEnabled() {
+//			return false;
+//		}
 	}
 	
 }

@@ -107,7 +107,7 @@ public class HomeActivity extends Activity implements ProgressActivity {
 				actionBar.newTab().setText(R.string.tab_map).setTabListener(tabListener)
 				);
 		actionBar.addTab(
-				actionBar.newTab().setText(R.string.tab_favorites).setTag("fav").setTabListener(tabListener)
+				actionBar.newTab().setText(R.string.tab_favorites).setTag("fav").setTabListener(tabListener).setIcon(R.drawable.favorite_on)
 				);
 	}
 
@@ -135,6 +135,8 @@ public class HomeActivity extends Activity implements ProgressActivity {
 
 			// tell the fragment to start the search...
 			gridFragment.startNewSearch(mLastQuery);
+			
+			mViewPager.setCurrentItem(0);
 			
 			// closes the search suggestions and clear focus from the TextView
 			searchView.clearFocus();

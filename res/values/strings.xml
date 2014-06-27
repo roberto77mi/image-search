@@ -9,7 +9,7 @@
     
     <string name="tab_image_grid">GRID</string>
     <string name="tab_map">MAP</string>
-    <string name="tab_favorites">FAVORITES</string>
+    <string name="tab_favorites">FAVS</string>
     
     
     <string name="favorites_empty">no favorites yet</string>

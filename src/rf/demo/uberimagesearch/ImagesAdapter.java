@@ -53,15 +53,21 @@ public class ImagesAdapter extends ArrayAdapter<WebImage> {
 		
 		final ImageView imageView;
 		final TextView errorTextView;
+		final ImageView favImageView;
 		
 		public ImgViewHolder(View cell) {
 			imageView = (ImageView) cell.findViewById(R.id.img_row);
 			errorTextView = (TextView) cell.findViewById(R.id.img_row_message);
+			favImageView = (ImageView) cell.findViewById(R.id.img_fav);
 		}
 
 		public void refresh(WebImage webImage) {
 			errorTextView.setVisibility(View.GONE);
-			
+			if (webImage.fav) {
+				favImageView.setVisibility(View.VISIBLE);
+			} else {
+				favImageView.setVisibility(View.GONE);
+			}
 			Picasso.with(activity)
 				.load(webImage.tbUrl)
 				.into(imageView, new Callback() {

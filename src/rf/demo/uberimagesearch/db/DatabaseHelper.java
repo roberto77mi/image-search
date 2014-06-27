@@ -113,4 +113,10 @@ public class DatabaseHelper extends SQLiteOpenHelper  {
 		
 		c.close();
 	}
+
+	public void delete(long id) {
+		if (id==0) return; // 
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(DATABASE_TABLE, FIELD_ID+" = "+id, null);
+	}
 }
