@@ -53,7 +53,7 @@ public interface GoogleImageApi {
 	@Headers({
 	    "User-Agent: RF-Uber-Image-Search"
 	})
-	@GET("/ajax/services/search/images?v=1.0")
+	@GET("/ajax/services/search/images?v=1.0&as_filetype=jpg&imgsz=medium")
 	void listImages( @Query("q") String query, @Query("rsz") int size, @Query("start") int start, Callback<GoogleImageApiResponse> cb);
 	
 	class GoogleImageApiResponse {
@@ -80,7 +80,7 @@ public interface GoogleImageApi {
 			return responseStatus;
 		}
 		public boolean isMoreDataAvailable(){
-			if (responseData.cursor.pages == null) return false;
+			if (responseData==null || responseData.cursor==null || responseData.cursor.pages == null) return false;
 			
 			int maxPage = responseData.cursor.pages.size();
 			int currentPage = responseData.cursor.currentPageIndex+1;

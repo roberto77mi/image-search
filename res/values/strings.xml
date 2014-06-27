@@ -11,6 +11,9 @@
     <string name="tab_map">MAP</string>
     <string name="tab_favorites">FAVORITES</string>
     
+    
+    <string name="favorites_empty">no favorites yet</string>
+    
     <string name="action_loading">Loading</string>
     <string name="action_search">Image Search</string>
 

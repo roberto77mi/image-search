@@ -15,5 +15,8 @@
     <style name="HeaderText" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/pale_blue</item>
     </style>
-    
+    <style name="CaptionText" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/pale_blue</item>
+        <item name="android:gravity">center</item>
+    </style>    
 </resources>

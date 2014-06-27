@@ -13,6 +13,7 @@ import rf.demo.uberimagesearch.api.GoogleImageApi;
 import rf.demo.uberimagesearch.api.GoogleImageApi.GoogleImageApiResponse;
 import rf.demo.uberimagesearch.api.WebImage;
 import rf.demo.uberimagesearch.db.DatabaseHelper;
+import rf.demo.uberimagesearch.db.UberImagesProvider;
 import rf.demo.uberimagesearch.history.SearchHistoryProvider;
 import android.app.Activity;
 import android.app.Fragment;
@@ -183,13 +184,11 @@ public class ImageGridFragment extends Fragment implements OnScrollListener, OnI
 			
 			webImage.fav = true;
 			webImage.favDate = new Date();
-			webImage.q = mQuery;
-
+			webImage.foundInQuery = mQuery;
+			
 			DatabaseHelper.getInstance(getActivity()).saveWebImage(webImage);
 			
-			// TODO make Async
-			int total = DatabaseHelper.getInstance(getActivity()).countAll();
-			Toast.makeText(getActivity(), total+" favorites", Toast.LENGTH_LONG).show();
+			getActivity().getContentResolver().notifyChange(UberImagesProvider.CONTENT_URI, null);
 			
 		}
 		return true;

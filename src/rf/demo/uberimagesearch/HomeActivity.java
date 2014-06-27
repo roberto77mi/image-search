@@ -11,8 +11,6 @@ import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -27,9 +25,10 @@ import android.widget.SearchView;
  * 
  * @author Roberto Fonti
  */
-public class ImageGridActivity extends Activity implements ProgressActivity {
+public class HomeActivity extends Activity implements ProgressActivity {
 
 	ImageGridFragment gridFragment;
+	
 	SearchView searchView;
 	MenuItem menuProgress;
 	
@@ -45,8 +44,6 @@ public class ImageGridActivity extends Activity implements ProgressActivity {
 		// setContentView(R.layout.activity_image_grid);
 		setContentView(R.layout.activity_main_pager);
 
-		
-		
 		// gridFragment = (ImageGridFragment) getFragmentManager().findFragmentById(R.id.fragment_grid);
 		
 		if (savedInstanceState!=null) {
@@ -91,9 +88,12 @@ public class ImageGridActivity extends Activity implements ProgressActivity {
 			@Override
 			public void onTabSelected(Tab tab, FragmentTransaction ft) {
 				 mViewPager.setCurrentItem(tab.getPosition());
+				
 			}
 			@Override
-			public void onTabReselected(Tab tab, FragmentTransaction ft) {}
+			public void onTabReselected(Tab tab, FragmentTransaction ft) {
+				 
+			}
 			@Override
 			public void onTabUnselected(Tab tab, FragmentTransaction ft) {}
 
@@ -107,7 +107,7 @@ public class ImageGridActivity extends Activity implements ProgressActivity {
 				actionBar.newTab().setText(R.string.tab_map).setTabListener(tabListener)
 				);
 		actionBar.addTab(
-				actionBar.newTab().setText(R.string.tab_favorites).setTabListener(tabListener)
+				actionBar.newTab().setText(R.string.tab_favorites).setTag("fav").setTabListener(tabListener)
 				);
 	}
 
@@ -140,7 +140,6 @@ public class ImageGridActivity extends Activity implements ProgressActivity {
 			searchView.clearFocus();
 			
 		}
-
 	}
 
 	@Override
@@ -149,8 +148,24 @@ public class ImageGridActivity extends Activity implements ProgressActivity {
 		if (mLastQuery!=null) {
 			outState.putString("query", mLastQuery);
 		}
+		if (gridFragment!=null) {
+	        // Note, This is just persisting a reference to the current Fragment
+			getFragmentManager().putFragment(
+					outState, 
+					"grid_fragment",
+					gridFragment); 
+		}
 	}
-	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		if (gridFragment == null) {
+			gridFragment = (ImageGridFragment) getFragmentManager()
+					.getFragment(savedInstanceState, "grid_fragment");
+		}
+	}
+
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.image_grid, menu);
@@ -164,7 +179,7 @@ public class ImageGridActivity extends Activity implements ProgressActivity {
 		searchView.setQueryRefinementEnabled(true);
 		
 		// expand the SearchView and shows the keyboard
-		searchView.setIconified(false);
+		// searchView.setIconified(false);
 		
 		if (mLastQuery!=null) {
 			// from saved instance state, reset the query and force the keyboard to close
@@ -196,6 +211,7 @@ public class ImageGridActivity extends Activity implements ProgressActivity {
 		}
 	}
 	
+	
 	private class TabsAdapter extends FragmentPagerAdapter {
 		
 		public TabsAdapter(FragmentManager fm) {
@@ -206,15 +222,13 @@ public class ImageGridActivity extends Activity implements ProgressActivity {
 	    public Fragment getItem(int page) {
 	    	switch (page) {
 			case 0:
-				// TODO : implement factory method.. pass params?
 				gridFragment = new ImageGridFragment();
 				return gridFragment;
 			case 1:
-				Fragment mapFragment = new MapFragment();
-				return mapFragment;
-				
+				MapFragment mapFragment = new MapFragment();
+				return mapFragment;				
 			case 2:
-				Fragment favFragment = new FavoritesFragment();
+				FavoritesFragment favFragment = new FavoritesFragment();
 				return favFragment;
 				
 			default:

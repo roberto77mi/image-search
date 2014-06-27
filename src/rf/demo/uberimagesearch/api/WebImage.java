@@ -25,7 +25,6 @@ public class WebImage implements Serializable {
 	//
 	public boolean fav;
 	public Date favDate;
-	public String q;
 	public String title;
 	public String comment;
 	public String foundInQuery;

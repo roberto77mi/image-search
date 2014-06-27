@@ -2,9 +2,14 @@
 
     <dimen name="def_spacing">8dp</dimen>
     <dimen name="double_spacing">16dp</dimen>
+    <dimen name="half_spacing">4dp</dimen>
+    
 	<dimen name="placeholder">8dp</dimen>
 
     <dimen name="img_cell_padding">8dp</dimen>
     <dimen name="img_cell_min_height">120dp</dimen>
+    
+    <dimen name="img_height">240dp</dimen>
+    
     
 </resources>

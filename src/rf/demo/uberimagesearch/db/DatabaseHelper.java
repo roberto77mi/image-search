@@ -1,7 +1,6 @@
 package rf.demo.uberimagesearch.db;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import rf.demo.uberimagesearch.api.WebImage;
 import android.content.ContentValues;
@@ -11,24 +10,27 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class DatabaseHelper extends SQLiteOpenHelper { 
+public class DatabaseHelper extends SQLiteOpenHelper  { 
 	final static String TAG = "UberDB";
 	
 	private static DatabaseHelper sInstance;
 
-	private static final String DATABASE_NAME = "uberimages";
-	private static final String DATABASE_TABLE = "images";
-	private static final int DATABASE_VERSION = 1;
+	static final String DATABASE_NAME = "uberimages";
+	static final String DATABASE_TABLE = "images";
+	static final int DATABASE_VERSION = 1;
 
-	private static final String FIELD_THUMBURL = "thumbUrl";
-	private static final String FIELD_FULLURL = "fullUrl";
-	private static final String FIELD_TYPE = "type";
-	private static final String FIELD_FAV_DATE = "favDate";
-	private static final String FIELD_THUMB = "thumbUrl";
+	public static final String FIELD_ID = "_id";
+	public static final String FIELD_THUMBURL = "thumbUrl";
+	public static final String FIELD_FULLURL = "fullUrl";
+	public static final String FIELD_TYPE = "type";
+	public static final String FIELD_FAV_DATE = "favDate";
 	
-	private static final String FIELD_EXTRA = "extra";
-	private static final String FIELD_IMAGE_JSON = "imageJson";
-	private static final String FIELD_QUERY = "query";
+	public static final String FIELD_EXTRA = "extra";
+	public static final String FIELD_IMAGE_JSON = "imageJson";
+	public static final String FIELD_QUERY = "query";
+	
+	public static final String ORDER_FAV_DATE = FIELD_FAV_DATE + " DESC";
+	
 	
 	public static DatabaseHelper getInstance(Context context) {
 
@@ -47,9 +49,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		// it will be called the first time getWritableDb is called.
+		// it may not be in a background task!
+		
 		db.execSQL("CREATE TABLE "+DATABASE_TABLE+
 				"("+
-				" _id INTEGER PRIMARY KEY,"+
+				" "+FIELD_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
 				" "+FIELD_THUMBURL+" TEXT,"+
 				" "+FIELD_FULLURL+" TEXT,"+
 				" "+FIELD_TYPE+" INTEGER,"+ // 0=saved   1=favorite   2=??
@@ -76,15 +81,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		 ContentValues values = new ContentValues();
 		 values.put(FIELD_THUMBURL, webImage.tbUrl);
+		 values.put(FIELD_FULLURL, webImage.url);
 		 
 		 values.put(FIELD_QUERY, webImage.foundInQuery);
+		 // values.put(FIELD_, webImage.contentNoFormatting);
 		 
 		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		 
 		 values.put(FIELD_FAV_DATE, format.format(webImage.favDate));
 		 
 		 return db.insert(DATABASE_TABLE, null, values);
-		 
 	}
 
 	public int countAll() {
@@ -95,5 +101,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		c.close();
 		return r;
 	}
-	
+	public void dumpAll() {
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.query(DATABASE_TABLE, new String[]{FIELD_ID,FIELD_THUMBURL,FIELD_QUERY,FIELD_FAV_DATE}, null, null, null, null, null);
+		c.moveToFirst();
+		do {
+			
+			Log.d(TAG, "row: id="+c.getInt(0)+" q="+c.getString(2)+" date="+c.getString(3)+" thumb="+c.getString(1));
+			
+		} while (c.moveToNext());
+		
+		c.close();
+	}
 }
