@@ -4,7 +4,9 @@
     android:minHeight="@dimen/img_cell_min_height"
     android:padding="@dimen/img_cell_padding"
     android:gravity="center">
+    
 
+    
     <ImageView 
         android:id="@+id/img_row"
         android:layout_width="match_parent"
@@ -29,5 +31,14 @@
         android:visibility="gone"
         android:textColor="@color/orange"
         android:text="@string/message_img_failure"/>
-     
+         
+    <ImageView 
+        android:id="@+id/img_fav"
+        android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:scaleType="center"
+		android:layout_gravity="top|right"
+		android:src="@drawable/favorite_on"
+		android:visibility="gone"
+        />
 </FrameLayout>

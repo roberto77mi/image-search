@@ -21,11 +21,10 @@ public class WebImage implements Serializable {
 	
 	public String contentNoFormatting;
 	
-	long id; // saved in the internal DB
+	public long id; // saved in the internal DB
 	//
 	public boolean fav;
 	public Date favDate;
-	public String q;
 	public String title;
 	public String comment;
 	public String foundInQuery;
